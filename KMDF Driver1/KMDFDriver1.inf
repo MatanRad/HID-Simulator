@@ -38,6 +38,12 @@ CopyFiles=Drivers_Dir
 [Drivers_Dir]
 KMDFDriver1.sys
 
+[KMDFDriver1_Device.NT.HW]
+AddReg = HIDVHF_Inst.NT.AddReg
+
+[HIDVHF_Inst.NT.AddReg]
+HKR,,"LowerFilters",0x00010000,"vhf"
+
 ;-------------- Service installation
 [KMDFDriver1_Device.NT.Services]
 AddService = KMDFDriver1,%SPSVCINST_ASSOCSERVICE%, KMDFDriver1_Service_Inst
