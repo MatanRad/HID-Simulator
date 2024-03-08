@@ -3,33 +3,34 @@ import win32file
 import struct
 
 HID_REPORT = [
-    0x5,
-    0x1,  # USAGE_PAGE (Generic Desktop)
-    0x9,
-    0x4,  # USAGE (Joystick)
+    0x05,
+    0x01,  # UsagePage(Generic Desktop[1])
+    0x09,
+    0x04,  # UsageId(Joystick[4])
     0xA1,
-    0x1,  # COLLECTION (Application)
-    0x9,
-    0x1,  #   USAGE (Pointer)
-    0xA1,
-    0x0,  #   COLLECTION (Physical)
-    0x5,
-    0x1,  #     USAGE_PAGE (Generic Desktop)
-    0x9,
-    0x30,  #     USAGE (X)
+    0x01,  # Collection(Application)
+    0x85,
+    0x01,  #     ReportId(1)
+    0x05,
+    0x02,  #     UsagePage(Simulation Controls[2])
+    0x09,
+    0xB9,  #     UsageId(Elevator Trim[185])
     0x15,
-    0x0,  #     LOGICAL_MINIMUM (0)
+    0x00,  #     LogicalMinimum(0)
     0x26,
     0xFF,
-    0x3,  #     LOGICAL_MAXIMUM (1023)
-    0x75,
-    0x10,  #     REPORT_SIZE (16)
+    0x03,  #     LogicalMaximum(1,023)
     0x95,
-    0x1,  #     REPORT_COUNT (1)
+    0x01,  #     ReportCount(1)
+    0x75,
+    0x0A,  #     ReportSize(10)
     0x81,
-    0x82,  #     Input (Data, Variable, Absolute, Volatile)     */
-    0xC0,  #   END_COLLECTION
-    0xC0,  # END_COLLECTION
+    0x02,  #     Input(Data, Variable, Absolute, NoWrap, Linear, PreferredState, NoNullPosition, BitField)
+    0x75,
+    0x06,  #     ReportSize(6)
+    0x81,
+    0x03,  #     Input(Constant, Variable, Absolute, NoWrap, Linear, PreferredState, NoNullPosition, BitField)
+    0xC0,  # EndCollection()
 ]
 
 handle = None
