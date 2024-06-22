@@ -1,5 +1,5 @@
 ;
-; KMDFDriver1.inf
+; HIDSimulator.inf
 ;
 
 [Version]
@@ -7,19 +7,19 @@ Signature="$WINDOWS NT$"
 Class=System ; TODO: specify appropriate Class
 ClassGuid={4d36e97d-e325-11ce-bfc1-08002be10318} ; TODO: specify appropriate ClassGuid
 Provider=%ManufacturerName%
-CatalogFile=KMDFDriver1.cat
+CatalogFile=HIDSimulator.cat
 DriverVer= ; TODO: set DriverVer in stampinf property pages
 PnpLockdown=1
 
 [DestinationDirs]
 DefaultDestDir = 12
-KMDFDriver1_Device_CoInstaller_CopyFiles = 11
+HIDSimulator_Device_CoInstaller_CopyFiles = 11
 
 [SourceDisksNames]
 1 = %DiskName%,,,""
 
 [SourceDisksFiles]
-KMDFDriver1.sys  = 1,,
+HIDSimulator.sys  = 1,,
 WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
 
 ;*****************************************
@@ -30,54 +30,54 @@ WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with
 %ManufacturerName%=Standard,NT$ARCH$
 
 [Standard.NT$ARCH$]
-%KMDFDriver1.DeviceDesc%=KMDFDriver1_Device, Root\HelloWorld ; TODO: edit hw-id
+%HIDSimulator.DeviceDesc%=HIDSimulator_Device, Root\HelloWorld ; TODO: edit hw-id
 
-[KMDFDriver1_Device.NT]
+[HIDSimulator_Device.NT]
 CopyFiles=Drivers_Dir
 
 [Drivers_Dir]
-KMDFDriver1.sys
+HIDSimulator.sys
 
-[KMDFDriver1_Device.NT.HW]
+[HIDSimulator_Device.NT.HW]
 AddReg = HIDVHF_Inst.NT.AddReg
 
 [HIDVHF_Inst.NT.AddReg]
 HKR,,"LowerFilters",0x00010000,"vhf"
 
 ;-------------- Service installation
-[KMDFDriver1_Device.NT.Services]
-AddService = KMDFDriver1,%SPSVCINST_ASSOCSERVICE%, KMDFDriver1_Service_Inst
+[HIDSimulator_Device.NT.Services]
+AddService = HIDSimulator,%SPSVCINST_ASSOCSERVICE%, HIDSimulator_Service_Inst
 
-; -------------- KMDFDriver1 driver install sections
-[KMDFDriver1_Service_Inst]
-DisplayName    = %KMDFDriver1.SVCDESC%
+; -------------- HIDSimulator driver install sections
+[HIDSimulator_Service_Inst]
+DisplayName    = %HIDSimulator.SVCDESC%
 ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
 StartType      = 3               ; SERVICE_DEMAND_START
 ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
-ServiceBinary  = %12%\KMDFDriver1.sys
+ServiceBinary  = %12%\HIDSimulator.sys
 
 ;
-;--- KMDFDriver1_Device Coinstaller installation ------
+;--- HIDSimulator_Device Coinstaller installation ------
 ;
 
-[KMDFDriver1_Device.NT.CoInstallers]
-AddReg=KMDFDriver1_Device_CoInstaller_AddReg
-CopyFiles=KMDFDriver1_Device_CoInstaller_CopyFiles
+[HIDSimulator_Device.NT.CoInstallers]
+AddReg=HIDSimulator_Device_CoInstaller_AddReg
+CopyFiles=HIDSimulator_Device_CoInstaller_CopyFiles
 
-[KMDFDriver1_Device_CoInstaller_AddReg]
+[HIDSimulator_Device_CoInstaller_AddReg]
 HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
 
-[KMDFDriver1_Device_CoInstaller_CopyFiles]
+[HIDSimulator_Device_CoInstaller_CopyFiles]
 WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
 
-[KMDFDriver1_Device.NT.Wdf]
-KmdfService =  KMDFDriver1, KMDFDriver1_wdfsect
-[KMDFDriver1_wdfsect]
+[HIDSimulator_Device.NT.Wdf]
+KmdfService =  HIDSimulator, HIDSimulator_wdfsect
+[HIDSimulator_wdfsect]
 KmdfLibraryVersion = $KMDFVERSION$
 
 [Strings]
 SPSVCINST_ASSOCSERVICE= 0x00000002
 ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
-DiskName = "KMDFDriver1 Installation Disk"
-KMDFDriver1.DeviceDesc = "KMDFDriver1 Device"
-KMDFDriver1.SVCDESC = "KMDFDriver1 Service"
+DiskName = "HIDSimulator Installation Disk"
+HIDSimulator.DeviceDesc = "HIDSimulator Device"
+HIDSimulator.SVCDESC = "HIDSimulator Service"

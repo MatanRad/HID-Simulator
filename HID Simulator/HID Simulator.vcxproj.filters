@@ -19,7 +19,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Inf Include="KMDFDriver1.inf">
+    <Inf Include="HIDSimulator.inf">
       <Filter>Driver Files</Filter>
     </Inf>
   </ItemGroup>
