@@ -57,9 +57,7 @@ NTSTATUS exec_clear_dev_cmd(driver_state_t* state, command_clear_dev_t* cmd) {
 
     uninit_vhf_device(&state->vhf_dev);
 
-    EXPECT(state->vhf_dev.handle != NULL, STATUS_SUCCESS);
-
-    memset(&state->vhf_dev, 0, sizeof(vhf_device_t));
+    EXPECT(state->vhf_dev.handle == NULL, STATUS_SUCCESS);
 
 cleanup:
     return res;
