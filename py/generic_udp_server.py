@@ -17,6 +17,8 @@ if __name__ == "__main__":
         sock.bind(("0.0.0.0", 13370))
         while True:
             data, addr = sock.recvfrom(4096)
+            if data == b"exit":
+                break
             print("Received: ", data)
             win32file.WriteFile(handle, data, None)
 

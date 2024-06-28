@@ -25,6 +25,14 @@ typedef struct command_clear_dev_s {
     UCHAR type;
 } command_clear_dev_t;
 
+#define CMD_CODE_SEND_INPUT ('i')
+typedef struct command_send_input_s {
+    UCHAR type;
+    UCHAR report_id;
+    ULONG report_len;
+    UCHAR report[MAX_REPORT_LENGTH];
+} command_send_input_t;
+
 #pragma pack(pop)
 
 NTSTATUS exec_user_cmd(driver_state_t* state, PUCHAR buff, ULONG buff_len);

@@ -63,6 +63,25 @@ cleanup:
     return res;
 }
 
+NTSTATUS exec_send_input_cmd(driver_state_t* state, command_send_input_t* cmd) {
+    NTSTATUS res = STATUS_SUCCESS;
+    TRACE("[MY_DRIVER] Executing send input command!\n");
+
+    EXPECT(state && cmd, STATUS_SUCCESS);
+    EXPECT(cmd->type == CMD_CODE_SEND_INPUT, STATUS_SUCCESS);
+
+    EXPECT(state->vhf_dev.handle != NULL, -1);
+
+    HID_XFER_PACKET xfer = { 0 };
+    xfer.reportId = cmd->report_id;
+    xfer.reportBufferLen = cmd->report_len;
+    xfer.reportBuffer = cmd->report;
+    EXPECT_STATUS(VhfReadReportSubmit(state->vhf_dev.handle, &xfer));
+
+cleanup:
+    return res;
+}
+
 NTSTATUS exec_user_cmd(driver_state_t* state, PUCHAR buff, ULONG buff_len) {
     NTSTATUS res = STATUS_SUCCESS;
     TRACE("[MY_DRIVER] Executing command!\n");
@@ -82,6 +101,15 @@ NTSTATUS exec_user_cmd(driver_state_t* state, PUCHAR buff, ULONG buff_len) {
             VERIFY_CMD(buff, buff_len, command_clear_dev_t, CMD_CODE_CLEAR_DEV);
             EXPECT_RETHROW(
                 exec_clear_dev_cmd(state, (command_clear_dev_t*)buff));
+            break;
+
+        case CMD_CODE_SEND_INPUT:
+            VERIFY_CMD(buff, buff_len, command_send_input_t, CMD_CODE_SEND_INPUT);
+            EXPECT_RETHROW(
+                exec_send_input_cmd(state, (command_send_input_t*)buff));
+            break;
+        default:
+            TRACE("[MY_DRIVER] Unknown Command Recieved! (%ul)\n", (unsigned int)buff[0]);
             break;
     }
 
