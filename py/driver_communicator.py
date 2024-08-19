@@ -76,20 +76,20 @@ class DriverManager(object):
     def __init__(self, communicator: BaseDriverCommunicator):
         self._communicator = communicator
 
-    def set_device(self, report_desc: bytes):
-        set_dev_cmd = SetDeviceCommand.build(dict(dev=dict(report_desc=report_desc)))
+    def set_device(self, report_desc: bytes, name: str = "Virtual HID Device", dev_id: int = 0):
+        set_dev_cmd = SetDeviceCommand.build(dict(dev=dict(report_desc=report_desc, name=name), dev_id=dev_id))
         self._communicator.send(set_dev_cmd)
 
-    def clear_device(self):
-        clear_dev_cmd = ClearDeviceCommand.build({})
+    def clear_device(self, dev_id: int = 0):
+        clear_dev_cmd = ClearDeviceCommand.build(dict(dev_id=dev_id))
         self._communicator.send(clear_dev_cmd)
     
     def bye(self):
         bye_cmd = ByeCommand.build({})
         self._communicator.send(bye_cmd)
 
-    def send_input(self, report: bytes, report_id: int = 0):
-        send_cmd = SendInputCommand.build(dict(report=report, report_id=report_id))
+    def send_input(self, report: bytes, report_id: int = 0, dev_id: int = 0):
+        send_cmd = SendInputCommand.build(dict(report=report, report_id=report_id, dev_id=dev_id))
         self._communicator.send(send_cmd)
 
     def __enter__(self):

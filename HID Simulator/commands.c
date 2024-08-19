@@ -2,11 +2,10 @@
 
 #include "defs.h"
 #include "vhf_dev.h"
-#include "tracing.h"
 
 #define VERIFY_CMD(buff, buff_len, cmd_struct, cmd_type)               \
     if (buff_len != sizeof(cmd_struct)) {                              \
-        TRACE("[MY_DRIVER] Invalid command size: %d! Expected: %d!\n", \
+        TRACE("[MY_DRIVER] Invalid command size: %d! Expected: %llu!\n", \
               buff_len, sizeof(cmd_struct));                           \
         EXPECT(0, -1);                                                 \
     }                                                                  \
@@ -35,15 +34,17 @@ NTSTATUS exec_set_dev_cmd(driver_state_t* state, command_set_dev_t* cmd) {
     EXPECT(state && cmd, STATUS_SUCCESS);
     EXPECT(cmd->type == CMD_CODE_SET_DEV, STATUS_SUCCESS);
 
-    EXPECT(state->vhf_dev.handle == NULL, STATUS_SUCCESS);
+    EXPECT(cmd->dev_id < MAX_DEVICES, STATUS_SUCCESS);
+
     EXPECT(cmd->dev.handle == NULL, STATUS_SUCCESS);
+    EXPECT(state->vhf_devices[cmd->dev_id].handle == NULL, STATUS_SUCCESS);
 
     vhf_device_t dev = cmd->dev;
 
     EXPECT_RETHROW(init_vhf_device(&dev, state->driver_dev));
 
     EXPECT(dev.handle != NULL, STATUS_SUCCESS);
-    state->vhf_dev = dev;
+    state->vhf_devices[cmd->dev_id] = dev;
 
 cleanup:
     return res;
@@ -55,10 +56,11 @@ NTSTATUS exec_clear_dev_cmd(driver_state_t* state, command_clear_dev_t* cmd) {
 
     EXPECT(state && cmd, STATUS_SUCCESS);
     EXPECT(cmd->type == CMD_CODE_CLEAR_DEV, STATUS_SUCCESS);
+    EXPECT(cmd->dev_id < MAX_DEVICES, STATUS_SUCCESS);
 
-    uninit_vhf_device(&state->vhf_dev);
+    uninit_vhf_device(&state->vhf_devices[cmd->dev_id]);
 
-    EXPECT(state->vhf_dev.handle == NULL, STATUS_SUCCESS);
+    EXPECT(state->vhf_devices[cmd->dev_id].handle == NULL, STATUS_SUCCESS);
 
 cleanup:
     return res;
@@ -70,14 +72,15 @@ NTSTATUS exec_send_input_cmd(driver_state_t* state, command_send_input_t* cmd) {
 
     EXPECT(state && cmd, STATUS_SUCCESS);
     EXPECT(cmd->type == CMD_CODE_SEND_INPUT, STATUS_SUCCESS);
+    EXPECT(cmd->dev_id < MAX_DEVICES, STATUS_SUCCESS);
 
-    EXPECT(state->vhf_dev.handle != NULL, -1);
+    EXPECT(state->vhf_devices[cmd->dev_id].handle != NULL, -1);
 
     HID_XFER_PACKET xfer = { 0 };
     xfer.reportId = cmd->report_id;
     xfer.reportBufferLen = cmd->report_len;
     xfer.reportBuffer = cmd->report;
-    EXPECT_STATUS(VhfReadReportSubmit(state->vhf_dev.handle, &xfer));
+    EXPECT_STATUS(VhfReadReportSubmit(state->vhf_devices[cmd->dev_id].handle, &xfer));
 
 cleanup:
     return res;

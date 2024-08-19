@@ -8,11 +8,13 @@ extern VHFHANDLE g_vhf;
 
 #define MAX_REPORT_DESCRIPTOR_LENGTH (2048)
 #define MAX_REPORT_LENGTH (2048)
+#define MAX_DEVICE_NAME (32)
 
 #pragma pack(push, 1)
 
 typedef struct vhf_device_s {
     VHFHANDLE handle;
+    CHAR name[MAX_DEVICE_NAME];
     USHORT report_desc_length;
     UCHAR report_desc[MAX_REPORT_DESCRIPTOR_LENGTH];
 } vhf_device_t;

@@ -17,17 +17,20 @@ typedef struct command_bye_s {
 #define CMD_CODE_SET_DEV ('s')
 typedef struct command_set_dev_s {
     UCHAR type;
+    ULONG dev_id;
     vhf_device_t dev;
 } command_set_dev_t;
 
 #define CMD_CODE_CLEAR_DEV ('c')
 typedef struct command_clear_dev_s {
     UCHAR type;
+    ULONG dev_id;
 } command_clear_dev_t;
 
 #define CMD_CODE_SEND_INPUT ('i')
 typedef struct command_send_input_s {
     UCHAR type;
+    ULONG dev_id;
     UCHAR report_id;
     ULONG report_len;
     UCHAR report[MAX_REPORT_LENGTH];

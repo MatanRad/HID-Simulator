@@ -6,7 +6,7 @@
     do {                                                                     \
         res = (x);                                                           \
         if (!NT_SUCCESS(res)) {                                              \
-            TRACE("[MY_DRIVER] NSTATUS Error %s:%d! Status: %d\n", __FILE__, \
+            TRACE_ERROR("[MY_DRIVER] NSTATUS Error %s:%d! Status: %d\n", __FILE__, \
                   __LINE__, res);                                            \
             goto cleanup;                                                    \
         }                                                                    \
@@ -16,7 +16,7 @@
     do {                                                                       \
         if (!(x)) {                                                            \
             res = (r);                                                         \
-            TRACE("[MY_DRIVER] Error %s:%d! Result: %d\n", __FILE__, __LINE__, \
+            TRACE_ERROR("[MY_DRIVER] Error %s:%d! Result: %d\n", __FILE__, __LINE__, \
                   res);                                                        \
             goto cleanup;                                                      \
         }                                                                      \
@@ -26,7 +26,7 @@
     do {                                                                     \
         res = (x);                                                           \
         if (!NT_SUCCESS(res)) {                                              \
-            TRACE("		[MY_DRIVER] Rethrown at %s:%d!\n", __FILE__, \
+            TRACE_ERROR("		[MY_DRIVER] Rethrown at %s:%d!\n", __FILE__, \
                   __LINE__);                                                 \
             goto cleanup;                                                    \
         }                                                                    \

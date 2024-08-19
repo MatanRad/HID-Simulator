@@ -14,6 +14,16 @@ NTSTATUS init_vhf_device(vhf_device_t* device, WDFDEVICE driver_device) {
     EXPECT(device->report_desc_length > 0, -1);
     EXPECT(device->report_desc_length < MAX_REPORT_LENGTH, -1);
 
+    // Verify device name contains a nullbyte
+    BOOLEAN foundNullbyte = FALSE;
+    for (unsigned int i = 0; i < MAX_DEVICE_NAME; i++) {
+        if (device->name[i] == '\0') {
+            foundNullbyte = TRUE;
+            break;
+        }
+    }
+    EXPECT(foundNullbyte, -1);
+
     PDEVICE_OBJECT dobject = WdfDeviceWdmGetDeviceObject(driver_device);
     EXPECT(dobject != NULL, -1);
 
