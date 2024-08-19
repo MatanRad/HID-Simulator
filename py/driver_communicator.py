@@ -45,7 +45,7 @@ class SocketDriverCommunicator(BaseDriverCommunicator):
     def receive(self):
         raise NotImplementedError()
     
-class DirectDriverCommunicator():
+class DirectDriverCommunicator(BaseDriverCommunicator):
     def __init__(self, path=r"\\.\MyDevice"):
         self._handle = None
     
@@ -65,7 +65,7 @@ class DirectDriverCommunicator():
         self._handle = None
 
     def send(self, data):
-        win32file.WriteFile(self._handle, data.encode("ascii"), None)
+        win32file.WriteFile(self._handle, data, None)
 
     def receive(self):
         raise NotImplementedError()
