@@ -2,6 +2,7 @@
 
 #include "defs.h"
 #include "vhf_dev.h"
+#include "tracing.h"
 
 #define VERIFY_CMD(buff, buff_len, cmd_struct, cmd_type)               \
     if (buff_len != sizeof(cmd_struct)) {                              \
@@ -65,7 +66,7 @@ cleanup:
 
 NTSTATUS exec_send_input_cmd(driver_state_t* state, command_send_input_t* cmd) {
     NTSTATUS res = STATUS_SUCCESS;
-    TRACE("[MY_DRIVER] Executing send input command!\n");
+    TRACE_DEBUG("[MY_DRIVER] Executing send input command!\n");
 
     EXPECT(state && cmd, STATUS_SUCCESS);
     EXPECT(cmd->type == CMD_CODE_SEND_INPUT, STATUS_SUCCESS);
@@ -84,7 +85,7 @@ cleanup:
 
 NTSTATUS exec_user_cmd(driver_state_t* state, PUCHAR buff, ULONG buff_len) {
     NTSTATUS res = STATUS_SUCCESS;
-    TRACE("[MY_DRIVER] Executing command!\n");
+    TRACE_DEBUG("[MY_DRIVER] Executing command!\n");
 
     switch (buff[0]) {
         case CMD_CODE_BYE:

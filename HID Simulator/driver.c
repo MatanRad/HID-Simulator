@@ -27,6 +27,7 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject,
     WDF_DRIVER_CONFIG config = {0};
 
     TRACE("[MY_DRIVER] Driver Entry!\n");
+    g_state.log_level = LOG_INFO;
 
     WDF_DRIVER_CONFIG_INIT(&config, KmdfHelloWorldEvtDeviceAdd);
 
@@ -60,7 +61,7 @@ void KmdfIoQueueIoWrite(WDFQUEUE Queue, WDFREQUEST Request, size_t Length) {
     }
 
     // Print the buffer to the debug console
-    TRACE("[MY_DRIVER] Message: %s!\n", (PCSTR)buffer);
+    TRACE_DEBUG("[MY_DRIVER] Message: %s!\n", (PCSTR)buffer);
 
     if (bufferLength > sizeof(g_buf) || bufferLength == 0) {
         g_buf_len = 0;

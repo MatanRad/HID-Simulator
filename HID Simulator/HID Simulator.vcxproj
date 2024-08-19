@@ -122,6 +122,7 @@
     <ClInclude Include="commands.h" />
     <ClInclude Include="defs.h" />
     <ClInclude Include="state.h" />
+    <ClInclude Include="tracing.h" />
     <ClInclude Include="vhf_dev.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

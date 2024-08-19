@@ -1,16 +1,6 @@
 #pragma once
 
-#ifdef DEBUG
-
-#define TRACE(...) \
-    KdPrintEx((DPFLTR_IHVDRIVER_ID, DPFLTR_INFO_LEVEL, __VA_ARGS__))
-
-#else
-
-#define TRACE(...) \
-    KdPrintEx((DPFLTR_IHVDRIVER_ID, DPFLTR_INFO_LEVEL, __VA_ARGS__))
-
-#endif
+#include "tracing.h"
 
 #define EXPECT_STATUS(x)                                                     \
     do {                                                                     \
